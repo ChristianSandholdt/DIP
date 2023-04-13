@@ -2,45 +2,35 @@ body
     h1 opgave 17 13/4/2023
 
 script.
-    async function post(url, objekt) {
-        const respons = await fetch(url, {
-            method: "POST",
-            body: JSON.stringify(objekt),
+    async function deletE(url, id) {
+        const respons = await fetch(url + '/' + id, {
+            method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        if (respons.status !== 201) // Created
+        if (respons.status !== 201) // Deleted
             throw new Error(respons.status);
         return await respons.text();
     }
-    let sendFunction = async (id) => {
+
+    let deletefunction = async (id) => {
             try {
-                await post("http://localhost:8000/beskeder", { id:id });
-                window.location.href = "http://localhost:8000/beskeder";
+                await deletE("/deleteBesked", id);
+                window.location.href='/beskeder';
             } catch (e) {
                 console.log("Fejl");
             }
         }
 
-p 
-|indtast besked
-input(type="text")
-br
-|indtast chatrum 
-input(type="text")
-br
-|indtast afsender 
-input(type="text")
-button(onclick='sendFunction("' + '")') Send besked
-
 brbr 
 
     ul
         each besked in beskeder 
-            li= "Besked: " + besked.besked + " Chatrum: " + besked.chatrum + " Afsender: " + besked.afsender
-    a(href="addBeskedPage")
-    form(action = "/beskeder", method="get")
+            li=''
+                a(href='javascript:deletefunction(\'' + besked.besked + '\')')= besked.chatrum + ' ' + besked.afsender
+    a(href="addBeskedPage") Tilføj besked 
+    form(action = "/searchBeskeder", method="get")
         input(type="text", name="besked")
         input(type="text", name="chatrum")
         input(type="text", name ="afsender") 
