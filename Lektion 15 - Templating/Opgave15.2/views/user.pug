@@ -1,0 +1,9 @@
+body
+    h1 opgave 15.2
+
+p 
+    |Users er:
+    each user in brugere
+        ul
+            li = #{user.navn} #{user.alder} år #{user.tlf}
+            

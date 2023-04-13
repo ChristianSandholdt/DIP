@@ -1,0 +1,10 @@
+html 
+  head 
+    title Tilføj besked 
+  body 
+    form(action="/addBesked", method="post")
+      input(type="text", name="besked")
+      input(type="text", name="chatrum")
+      input(type="text", name="afsender")
+      input(type="submit", value="Send besked")
+    

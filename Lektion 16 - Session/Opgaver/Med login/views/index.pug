@@ -1,0 +1,50 @@
+script.
+    async function post(url, objekt) {
+        const respons = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(objekt),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (respons.status !== 201) // Created
+            throw new Error(respons.status);
+        return await respons.text();
+    }
+    let clickfunction = async (id) => {
+            try {
+                await post("http://localhost:6969/add", { id:id });
+                window.location.href = "http://localhost:6969/index";
+            } catch (e) {
+                console.log("Fejl");
+            }
+        }
+
+
+body 
+    h1 Welcome #{navnData}
+p
+    a(href="/logout")= "Log ud"
+
+p
+|These are you products
+table
+    each produkt in products
+        tr
+            td Product name: #{produkt.name} #{produkt.price}$ ID: #{produkt.id} 
+            td 
+                button(onclick='clickfunction("' + produkt.id + '")') Add to cart
+
+p Cart
+table
+    tr 
+        th Name 
+        th Price
+            each kurvID in kurv
+                each produkt in products 
+                     
+                        if kurvID == produkt.id
+                            tr
+                                td #{produkt.name}
+                                td #{produkt.price}$
+

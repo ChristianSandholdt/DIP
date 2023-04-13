@@ -1,0 +1,18 @@
+body
+    h1 opgave 15.2
+
+
+p 
+    |Users er:
+    if brugere.length < 100
+        if brugere.length >= 10
+            each user in brugere
+                    if user.nationalitet.length === 2
+                        ul
+                            li = #{user.navn} #{user.alder} år #{user.tlf}
+                    else 
+                        p |Fejl, nationalitet er forskellig fra to tegn
+        else
+            p |Fejl, der er ikke nok mennesker i listen.
+    else
+        p |Fejl, der er for mange mennesker i listen.
