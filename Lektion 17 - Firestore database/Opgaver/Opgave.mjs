@@ -1,7 +1,8 @@
-import express from 'express';
+import express, { response } from 'express';
 const app = express();
 import {initializeApp} from "firebase/app";
 import { getFirestore, collection, getDocs, doc, deleteDoc, addDoc, getDoc, query, where } from 'firebase/firestore'
+import { request } from 'http';
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -10,6 +11,8 @@ const __dirname = path.dirname(filename);
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/views'));
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 const port = 8000;
 // let beskeder = [{ afsender: "Ole", tekst: "Min første besked", chatrum: "rum1", nummer: "1" }, { afsender: "Ib", tekst: "Hallo, er der nogen?", chatrum: "rum2", nummer: "2" }];
@@ -55,7 +58,7 @@ async function searchBeskeder(chatrum) {
     let q = query(beskedCol, where('chatrum', '==', chatrum));
     let beskeder = await getDocs(q);
 
-    let beskedList = beskeder-docs.map(doc => {
+    let beskedList = beskeder.docs.map(doc => {
         let data = doc.data();
         data.docID = doc.id;
         return data;
@@ -63,8 +66,12 @@ async function searchBeskeder(chatrum) {
     return beskedList;
 }
 
-async function opretBesked(besked, chatrum, afsender) {
-    addDoc(collection(db,'Beskeder'), {besked: besked, chatrum, afsender})
+async function addBesked(besked, chatrum, afsender) {
+    addDoc(collection(db,'Beskeder'), {besked, chatrum, afsender})
+}
+
+async function deleteBesked(id) {
+    await deleteDoc(doc(db, 'Beskeder', id))
 }
 
 //Express endpoints
@@ -76,8 +83,8 @@ app.get('/beskeder', async (request, response) => {
 })
 
 app.get('/searchBeskeder', async (request, response) => {
-    let chatRum = request.query.chatrum;
-    const beskeder = await searchBeskeder(chatRum);
+    let chatrum = request.query.chatrum;
+    const beskeder = await searchBeskeder(chatrum);
     response.render('index', {beskeder: beskeder})
 })
 
@@ -85,11 +92,23 @@ app.get('/addBeskedPage', async(request, response) =>  {
     response.render('addBesked')
 })
 
+app.get('/addBesked', async(request, response) => {
+    response.render('index')
+})
+
 //Opretter en besked og sender den til firebase databasen
 app.post('/addBesked', async (request, response) => {
     let {besked, chatrum, afsender} = request.body;
     console.log(request.body);
-    await opretBesked(besked, chatrum, afsender)
+    await addBesked({besked, chatrum, afsender})
+    response.redirect('/beskeder')
+})
+
+app.delete('/deleteBesked/:id', async (request, response) => {
+    let id = request.params.id;
+    await deleteBesked(id);
+    //response.status(200);
+    // response.redirect('back');
     response.redirect('/beskeder')
 })
 
