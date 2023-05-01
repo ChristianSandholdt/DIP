@@ -23,15 +23,39 @@ script.
             }
         }
 
+    async function changeRoom(url, id) {
+        const respons = await fetch(url + '/' + id, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }) 
+        if (respons.status !== 201) //Deleted
+            throw new Error(respons.status);
+        return await respons.text();
+        }
+
+    let clickfunction = async (id) => {
+            try {
+                await changeRoom("beskeder/" + id);
+                window.location.href = "searchBeskeder/" + id;
+            } catch (e) {
+                console.log("Fejl");
+            }
+        }
+
 brbr 
+
+button(onclick='clickfunction(1)') Chatrum 1
+button(onclick='clickfunction(2)') Chatrum 2
+button(onclick='clickfunction(3)') Chatrum 3
+
+brbr 
+
 
     ul
         each besked in beskeder 
             li=''
-                a(href='javascript:deletefunction(\'' + besked.besked + '\')')= besked.chatrum + ' ' + besked.afsender
+                a(href='javascript:deletefunction(\'' + besked.docID + '\')')= besked.besked + " " + besked.chatrum + ' ' + besked.afsender
     a(href="addBeskedPage") Tilføj besked 
-    form(action = "/searchBeskeder", method="get")
-        input(type="text", name="besked")
-        input(type="text", name="chatrum")
-        input(type="text", name ="afsender") 
-        input(type="submit", value="Send besked")
+        form(action = "/addBesked", method="get")
