@@ -67,7 +67,7 @@ async function searchBeskeder(chatrum) {
 }
 
 async function addBesked(besked, chatrum, afsender) {
-    addDoc(collection(db,'Beskeder'), {besked, chatrum, afsender})
+    addDoc(collection(db,'Beskeder'), besked, chatrum, afsender)
 }
 
 async function deleteBesked(id) {
