@@ -11,22 +11,16 @@ async function get(url) {
     return await respons.json();
 }
 
-//Uden brug af async
+//Uden async
 function getWithoutAsync(url) {
     fetch(url)
     .then(respons => {
-        if (respons.status !== 200) //OK
-            throw new Error(respons.status)
+        if (respons.status !== 200)
+            throw new Error(respons.status);
         return respons.json();
     })
-    .then(data => console.log(data))
+    .then(data => data.forEach(d => console.log(d.name)))
     .catch(error => console.log(error))
 }
 
 getWithoutAsync(userUrl)
-
-// get(userUrl)
-//     .then(data => data.forEach(d=> console.log(d)))
-//     .catch(error => console.log(error));
-
-

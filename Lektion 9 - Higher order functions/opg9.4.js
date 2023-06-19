@@ -28,7 +28,7 @@ console.log(myFunc(20))
 //C
 function composeFunctions(functions) {
     return function (x) {
-      return functions.reduce(function (acc, f) {
+      return functions.reduce(function(acc, f) {
         return f(acc);
       }, x);
     };

@@ -35,7 +35,7 @@ class Studerende extends Person {
     constructor(navn, id) { super(navn); this.id = id; }
     toString() { return super.toString() + ": " + this.id; };
 
-    equals(s) { return Studerende.prototype === s.__proto__ && this.navn === s.navn && this.navn === s.navn; }
+    equals(s) { return Studerende.prototype === s.__proto__ && this.navn === s.navn && this.id === s.id; }
 
 }
 

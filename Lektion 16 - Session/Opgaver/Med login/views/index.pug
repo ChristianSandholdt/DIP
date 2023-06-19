@@ -41,8 +41,7 @@ table
         th Name 
         th Price
             each kurvID in kurv
-                each produkt in products 
-                     
+                each produkt in products                      
                         if kurvID == produkt.id
                             tr
                                 td #{produkt.name}
