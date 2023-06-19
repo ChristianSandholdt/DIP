@@ -81,3 +81,23 @@ cars.forEach(car => {
     }
 })
 console.log("Highest amount of wheels are " + wheels + ", " + amount + " of the cars have that many wheels")
+
+let antalBilerMedHjul = cars.reduce((acc,bil) => {
+    let hjul = bil.wheels;
+    if (acc[hjul] == undefined) {
+        acc[hjul] = 1;
+    }
+    else {
+        acc[hjul]++
+    }
+    return acc;
+}
+, {});
+
+for (let hjul in antalBilerMedHjul) {
+    if (antalBilerMedHjul[hjul] > 1) {
+        console.log(`${antalBilerMedHjul[hjul]} biler med ${hjul} hjul`)
+    } else {
+        console.log(`${antalBilerMedHjul[hjul]} bil med ${hjul}`)
+    }
+}
